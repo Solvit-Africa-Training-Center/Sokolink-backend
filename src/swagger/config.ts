@@ -20,8 +20,8 @@ const swaggerDefinition: SwaggerDefinition = {
     },
 
     {
-      url: 'https://api.sokolink.com/api',
-      description: 'Production server',
+      url: 'https://sokolink-backend-liuh.onrender.com',
+      description: 'On Render Production',
     },
   ],
   components: {
