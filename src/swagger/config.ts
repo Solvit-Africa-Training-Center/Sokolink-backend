@@ -14,15 +14,18 @@ const swaggerDefinition: SwaggerDefinition = {
     },
   },
   servers: [
+
+      {
+      url: 'https://sokolink-backend-liuh.onrender.com/api',
+      description: 'On Render Production',
+    },
+    
     {
       url: 'http://localhost:5000/api',
       description: 'Development server',
     },
 
-    {
-      url: 'https://sokolink-backend-liuh.onrender.com',
-      description: 'On Render Production',
-    },
+  
   ],
   components: {
     securitySchemes: {
