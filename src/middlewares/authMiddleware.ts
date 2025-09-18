@@ -23,7 +23,7 @@ interface JwtPayload {
 }
 
 export interface IRequestUser extends Request {
-    user?: JwtPayload;
+    user?: JwtPayload  // Ensure id is always present
     token?: string;
 }
 

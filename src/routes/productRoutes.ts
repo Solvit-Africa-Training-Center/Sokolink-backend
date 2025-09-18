@@ -24,7 +24,7 @@ productRoutes.post(
   '/categories',
   rateLimiting(30),
   authMiddleware,
-  checkRole(['wholesaler']),
+  checkRole(['Wholesaler']),
   ValidationMiddleware({ type: 'body', schema: AddProductCategorySchema }),
   controller.createCategory,
 );
@@ -32,7 +32,7 @@ productRoutes.patch(
   '/categories/:id',
   rateLimiting(30),
   authMiddleware,
-  checkRole(['wholesaler']),
+  checkRole(['Wholesaler']),
   ValidationMiddleware({ type: 'body', schema: AddProductCategorySchema }),
   controller.updateCategory,
 );
@@ -40,7 +40,7 @@ productRoutes.delete(
   '/categories/:id',
   rateLimiting(30),
   authMiddleware,
-  checkRole(['admin', 'wholesaler']),
+  checkRole(['admin', 'Wholesaler']),
   ValidationMiddleware({ type: 'params', schema: IdValidationSchema }),
   controller.deleteCategory,
 );
@@ -53,7 +53,7 @@ productRoutes.post(
   '/sub-categories',
   rateLimiting(30),
   authMiddleware,
-  checkRole(['wholesaler']),
+  checkRole(['Wholesaler']),
   ValidationMiddleware({ type: 'body', schema: productSubCatSchema }),
   controller.createSubCategory,
 );
@@ -61,7 +61,7 @@ productRoutes.patch(
   '/sub-categories/:id',
   rateLimiting(30),
   authMiddleware,
-  checkRole(['wholesaler']),
+  checkRole(['Wholesaler']),
   ValidationMiddleware({ type: 'body', schema: productSubCatSchema }),
   controller.updateSubCategory,
 );
@@ -69,7 +69,7 @@ productRoutes.delete(
   '/sub-categories/:id',
   rateLimiting(30),
   authMiddleware,
-  checkRole(['admin', 'wholesaler']),
+  checkRole(['admin', 'Wholesaler']),
   ValidationMiddleware({ type: 'params', schema: IdValidationSchema }),
   controller.deleteSubCategory,
 );
@@ -85,10 +85,10 @@ productRoutes.get(
 );
 
 productRoutes.get(
-  '/products/wholesaler',
+  '/products/Wholesaler',
   rateLimiting(30),
   authMiddleware,
-  checkRole(['wholesaler']),
+  checkRole(['Wholesaler']),
   controller.WholesalerViewAllProducts,
 );
 
@@ -98,7 +98,7 @@ productRoutes.post(
   '/products',
   rateLimiting(30),
   authMiddleware,
-  checkRole(['wholesaler']),
+  checkRole(['Wholesaler']),
   uploadMiddleware.array('images', 8),
   productImageValidation,
   ValidationMiddleware({ type: 'body', schema: CreateProductSchema }),
@@ -108,7 +108,7 @@ productRoutes.patch(
   '/products/:id',
   rateLimiting(30),
   authMiddleware,
-  checkRole(['wholesaler']),
+  checkRole(['Wholesaler']),
   uploadMiddleware.array('images', 8),
   productImageValidation,
   ValidationMiddleware({ type: 'body', schema: UpdateProductSchema }),
@@ -118,7 +118,7 @@ productRoutes.delete(
   '/products/:id',
   rateLimiting(30),
   authMiddleware,
-  checkRole(['admin', 'wholesaler']),
+  checkRole(['Admin', 'Wholesaler']),
   ValidationMiddleware({ type: 'params', schema: IdValidationSchema }),
   controller.deleteProduct,
 ); //admin

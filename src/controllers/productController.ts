@@ -210,6 +210,7 @@ public async retailerViewAllProducts(req: Request, res: Response): Promise<void>
   public async createProduct(req: ProductRequest, res: Response): Promise<void> {
     try {
       const user = req?.user?.id as string;
+      const userRole = req?.user?.role as string;
       const { files } = req;
       Product.create(req.body, user, files as Express.Multer.File[], res);
     } catch (err) {
@@ -256,6 +257,7 @@ public async retailerViewAllProducts(req: Request, res: Response): Promise<void>
   public async updateProduct(req: ProductRequest, res: Response): Promise<void> {
     try {
       const userId = req?.user?.id as string;
+      const userRole = req?.user?.role as string;
       const { id } = req.params;
       const { files } = req;
       Product.update(req.body, id, userId, files as Express.Multer.File[], res);

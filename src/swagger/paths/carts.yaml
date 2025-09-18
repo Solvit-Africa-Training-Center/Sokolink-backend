@@ -1,0 +1,280 @@
+/carts:
+  get:
+    tags:
+      - Shopping Cart
+    summary: Get user's shopping cart
+    description: Retrieve the current user's shopping cart with all items and calculated totals
+    security:
+      - bearerAuth: []
+    responses:
+      '200':
+        description: Cart retrieved successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: 'Cart retrieved successfully.'
+                data:
+                  $ref: '#/components/schemas/Cart'
+      '401':
+        description: Authentication required
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '403':
+        description: Insufficient permissions (Customer/Admin role required)
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '500':
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+
+  post:
+    tags:
+      - Shopping Cart
+    summary: Add item to cart
+    description: Add a product to the user's shopping cart or increase quantity if already exists
+    security:
+      - bearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AddCartItem'
+    responses:
+      '201':
+        description: Item added to cart successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: 'Item added to cart successfully.'
+                data:
+                  $ref: '#/components/schemas/CartItem'
+      '400':
+        description: Validation error - invalid product ID or quantity
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '401':
+        description: Authentication required
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '403':
+        description: Insufficient permissions (Customer/Admin role required)
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '404':
+        description: Product not found
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '500':
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+
+  delete:
+    tags:
+      - Shopping Cart
+    summary: Remove specific item from cart
+    description: Remove a specific item from the user's shopping cart
+    security:
+      - bearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RemoveCartItem'
+    responses:
+      '200':
+        description: Item removed from cart successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: 'Item removed from cart successfully.'
+                data:
+                  type: 'null'
+      '400':
+        description: Validation error - invalid cart item ID
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '401':
+        description: Authentication required
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '403':
+        description: Insufficient permissions (Customer/Admin role required)
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '404':
+        description: Cart item not found
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '500':
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+
+/carts/{cartItemId}:
+  put:
+    tags:
+      - Shopping Cart
+    summary: Update cart item quantity
+    description: Update the quantity of a specific item in the user's shopping cart
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: cartItemId
+        in: path
+        required: true
+        description: Cart item ID to update
+        schema:
+          type: string
+          format: uuid
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateCartItem'
+    responses:
+      '200':
+        description: Cart item updated successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: 'Cart item updated successfully.'
+                data:
+                  $ref: '#/components/schemas/CartItem'
+      '400':
+        description: Validation error - invalid quantity
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '401':
+        description: Authentication required
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '403':
+        description: Insufficient permissions (Customer/Admin role required)
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '404':
+        description: Cart item not found
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '500':
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+
+/carts/clear:
+  delete:
+    tags:
+      - Shopping Cart
+    summary: Clear entire cart
+    description: Remove all items from the user's shopping cart
+    security:
+      - bearerAuth: []
+    responses:
+      '200':
+        description: Cart cleared successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: 'Cart cleared successfully.'
+                data:
+                  type: 'null'
+      '401':
+        description: Authentication required
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '403':
+        description: Insufficient permissions (Customer/Admin role required)
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '404':
+        description: Cart not found
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'
+      '500':
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorResponse'

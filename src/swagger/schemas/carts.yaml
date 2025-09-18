@@ -1,0 +1,239 @@
+components:
+  schemas:
+    Cart:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique cart identifier
+          nullable: true
+        userId:
+          type: string
+          format: uuid
+          description: User who owns the cart
+        items:
+          type: array
+          description: Array of cart items (ICartItem[])
+          items:
+            $ref: '#/components/schemas/ICartItem'
+        totalPrice:
+          type: number
+          format: float
+          minimum: 0
+          description: Total calculated price of all items in cart
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+          description: Cart creation timestamp
+          nullable: true
+        updatedAt:
+          type: string
+          format: date-time
+          description: Last update timestamp
+          nullable: true
+      example:
+        id: '123e4567-e89b-12d3-a456-426614174000'
+        userId: '456e7890-e89b-12d3-a456-426614174111'
+        items:
+          - id: '789e0123-e89b-12d3-a456-426614174222'
+            cartId: '123e4567-e89b-12d3-a456-426614174000'
+            productId: '321e6547-e89b-12d3-a456-426614174333'
+            quantity: 2
+            price: 199.99
+            totalprice: 399.98
+        totalPrice: 399.98
+        createdAt: '2024-01-15T10:30:00Z'
+        updatedAt: '2024-01-15T14:20:00Z'
+
+    ICartItem:
+      type: object
+      description: Cart item interface matching your ICartItem type
+      properties:
+      
+        id:
+          type: string
+          format: uuid
+          description: Unique cart item identifier
+          nullable: true
+        cartId:
+          type: string
+          format: uuid
+          description: Associated cart ID
+        productId:
+          type: string
+          format: uuid
+          description: Product being added to cart
+        quantity:
+          type: integer
+          minimum: 1
+          description: Quantity of the product
+        price:
+          type: number
+          format: float
+          minimum: 0
+          description: Unit price of the product at time of adding
+        totalprice:
+          type: number
+          format: float
+          minimum: 0
+          description: Total price for this item (price × quantity)
+          nullable: true
+      example:
+        id: '789e0123-e89b-12d3-a456-426614174222'
+        cartId: '123e4567-e89b-12d3-a456-426614174000'
+        productId: '321e6547-e89b-12d3-a456-426614174333'
+        quantity: 3
+        price: 99.99
+        totalprice: 299.97
+
+    ICartWithItems:
+      type: object
+      description: Cart with items array matching your ICartWithItems interface
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              nullable: true
+            userId:
+              type: string
+              format: uuid
+            createdAt:
+              type: string
+              format: date-time
+              nullable: true
+            updatedAt:
+              type: string
+              format: date-time
+              nullable: true
+        - type: object
+          properties:
+            items:
+              type: array
+              description: Array of CartItem model instances
+              items:
+                $ref: '#/components/schemas/CartItem'
+              nullable: true
+
+    CartItem:
+      type: object
+      description: Database CartItem model matching your CartItem class
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique cart item identifier
+        cartId:
+          type: string
+          format: uuid
+          description: Associated cart ID
+        productId:
+          type: string
+          format: uuid
+          description: Product being added to cart
+        quantity:
+          type: integer
+          minimum: 1
+          description: Quantity of the product
+        price:
+          type: number
+          format: float
+          minimum: 0
+          description: Unit price of the product at time of adding
+        totalprice:
+          type: number
+          format: float
+          minimum: 0
+          description: Total price for this item (price × quantity)
+        createdAt:
+          type: string
+          format: date-time
+          description: Item creation timestamp
+          nullable: true
+        updatedAt:
+          type: string
+          format: date-time
+          description: Last update timestamp
+          nullable: true
+      example:
+        id: '789e0123-e89b-12d3-a456-426614174222'
+        cartId: '123e4567-e89b-12d3-a456-426614174000'
+        productId: '321e6547-e89b-12d3-a456-426614174333'
+        quantity: 3
+        price: 99.99
+        totalprice: 299.97
+        createdAt: '2024-01-15T10:30:00Z'
+        updatedAt: '2024-01-15T14:20:00Z'
+
+    AddCartItem:
+      type: object
+      required:
+        - productId
+        - quantity
+      properties:
+        productId:
+          type: string
+          format: uuid
+          description: ID of the product to add to cart
+        quantity:
+          type: integer
+          minimum: 1
+          maximum: 999
+          description: Quantity of the product to add
+      example:
+        productId: '321e6547-e89b-12d3-a456-426614174333'
+        quantity: 2
+
+    UpdateCartItem:
+      type: object
+      required:
+        - quantity
+      properties:
+        quantity:
+          type: integer
+          minimum: 1
+          maximum: 999
+          description: New quantity for the cart item
+      example:
+        quantity: 5
+
+    RemoveCartItem:
+      type: object
+      required:
+        - cartItemId
+      properties:
+        cartItemId:
+          type: string
+          format: uuid
+          description: ID of the cart item to remove
+      example:
+        cartItemId: '789e0123-e89b-12d3-a456-426614174222'
+
+    EmptyCart:
+      type: object
+      properties:
+        id:
+          type: 'null'
+          description: No cart ID when cart is empty
+        userId:
+          type: string
+          format: uuid
+          description: User who owns the cart
+        items:
+          type: array
+          description: Empty array of cart items
+          items: {}
+          maxItems: 0
+        totalPrice:
+          type: number
+          format: float
+          description: Total price when cart is empty
+          example: 0
+      example:
+        id: null
+        userId: '456e7890-e89b-12d3-a456-426614174111'
+        items: []
+        totalPrice: 0

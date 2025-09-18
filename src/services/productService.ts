@@ -235,6 +235,7 @@ export const Product = {
     userID: string,
     files: Express.Multer.File[],
     res: Response,
+   
   ): Promise<void> => {
     try {
       const userExists = await Database.User.findOne({ where: { id: userID } });
