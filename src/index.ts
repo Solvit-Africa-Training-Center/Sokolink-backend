@@ -1,5 +1,4 @@
 import express, { Request, Response } from "express";
-import { config } from "dotenv";
 import { Database } from "./database";
 import redis from "./utils/redis";
 import { routers } from './routes';
@@ -11,12 +10,17 @@ import { swaggerSpec } from "./swagger/config";
 import { User } from "./database/models/Users";
 import { Role } from "./database/models/Roles";
 import jwt from "jsonwebtoken";
+import { config } from "dotenv";
+import cors from "cors";
+import { wholesalerRouter } from "./routes/wholesalerRoutes";
 
+import { retailerRouter } from "./routes/retailerRoutes";
 config();
 const app = express();
 
 // JSON parsing
 app.use(express.json());
+app.use(cors());
 
 // Session & Passport
 app.use(
@@ -60,8 +64,9 @@ passport.use(
           user = await User.create({
             name,
             email,
-            password:"", // Google login doesn't require password
+            password: "", // Google login doesn't require password
             roleId: defaultRole.id,
+            status: "pending", // Set default status for Google login users
           });
         }
 
@@ -98,6 +103,9 @@ app.get(
 
 passport.serializeUser((user, done) => done(null, user));
 passport.deserializeUser((user: any, done) => done(null, user));
+
+app.use("/api/wholesalers", wholesalerRouter);
+app.use('/api/retailers', retailerRouter);
 
 // Routers
 app.use(routers);
@@ -172,5 +180,7 @@ Database.database
     });
   })
   .catch((err) => console.error("Database connection error:", err));
+  app.use("/api/wholesalers", wholesalerRouter);
+  app.use('/api/retailers', retailerRouter);
 
 export { app };

@@ -1,9 +1,9 @@
 import { Sequelize } from "sequelize";
-import { databaseConfig } from "../config/config";
 import { AllModal } from "./models";
+import { databaseConfig, ConfigInterface } from "../config/config";
 
 const dbConnection = () => {
-  const db_config = databaseConfig();
+  const db_config = databaseConfig() as ConfigInterface;
 
   let sequelize: Sequelize;
 
@@ -39,7 +39,7 @@ sequelizeInstance
 
 const models = AllModal(sequelizeInstance);
 
-Object.values(models).forEach((model) => {
+Object.values(models).forEach((model: any) => {
   if (model.associate) {
     model.associate(models);
   }

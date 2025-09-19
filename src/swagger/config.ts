@@ -14,15 +14,18 @@ const swaggerDefinition: SwaggerDefinition = {
     },
   },
   servers: [
+
+      {
+      url: 'https://sokolink-backend-liuh.onrender.com/api',
+      description: 'On Render Production',
+    },
+    
     {
       url: 'http://localhost:5000/api',
       description: 'Development server',
     },
 
-    {
-      url: 'https://api.sokolink.com/api',
-      description: 'Production server',
-    },
+  
   ],
   components: {
     securitySchemes: {
@@ -37,6 +40,7 @@ const swaggerDefinition: SwaggerDefinition = {
     { bearerAuth: [] }, // Apply JWT globally
   ],
   tags: [
+    { name: 'Admin', description: 'Admin authentication and management endpoints' },
     { name: 'Auth', description: 'User authentication and registration' },
     { name: 'Products', description: 'Product management and viewing' },
     { name: 'Wholesalers', description: 'Wholesaler-specific endpoints' },

@@ -209,7 +209,19 @@ public async retailerViewAllProducts(req: Request, res: Response): Promise<void>
 
   public async createProduct(req: ProductRequest, res: Response): Promise<void> {
     try {
-      const user = req?.user?.id as string;
+      // added
+    const userId = req?.user?.id as string;
+    const userRole = req?.user?.role; // ✅ from JWT
+    if (userRole !== "wholesaler") {
+      ResponseService({
+        data: null,
+        status: 403,
+        success: false,
+        message: "Only wholesalers can create products",
+        res,
+      });
+    }
+       const user = req?.user?.id as string;
       const { files } = req;
       Product.create(req.body, user, files as Express.Multer.File[], res);
     } catch (err) {

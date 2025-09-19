@@ -1,7 +1,7 @@
 import { config } from "dotenv";
 config();
 
-interface ConfigInterface {
+export interface ConfigInterface {
   username?: string;
   password?: string;
   database?: string;
@@ -10,16 +10,16 @@ interface ConfigInterface {
   url?: string;
 }
 
-// ✅ Single function to return the right DB config
+// ✅ Named export
 export function databaseConfig(): ConfigInterface {
-  // If DATABASE_URL is provided (Render / PROD), use it
   if (process.env.DATABASE_URL) {
+    // Render / PROD
     return {
-      url: process.env.DATABASE_URL, // will be passed directly to Sequelize
+      url: process.env.DATABASE_URL,
     };
   }
 
-  // Otherwise, fallback to local DEV environment
+  // Local DEV
   return {
     username: process.env.DEV_USERNAME,
     password: process.env.DEV_PASSWORD,

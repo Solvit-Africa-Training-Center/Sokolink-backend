@@ -1,0 +1,87 @@
+/wholesalers/register:
+  post:
+    tags:
+      - Wholesalers
+    summary: Register a new wholesaler
+    description: Register a wholesaler with business details and required documents
+    requestBody:
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            $ref: '#/components/schemas/WholesalerRegister'
+    responses:
+      '201':
+        description: Wholesaler registered successfully
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WholesalerResponse'
+      '400':
+        description: Validation error
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: false
+                message:
+                  type: string
+                  example: "Validation error – missing required fields"
+
+/wholesalers/{id}/approval:
+  put:
+    tags:
+      - Wholesalers
+    summary: Admin approves or rejects wholesaler account
+    description: Approve or reject a wholesaler by ID
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              action:
+                type: string
+                enum: [approve, reject]
+              reason:
+                type: string
+    responses:
+      '200':
+        description: Wholesaler approved or rejected successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: "Wholesaler approved successfully"
+      '404':
+        description: Wholesaler not found
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: false
+                message:
+                  type: string
+                  example: "Wholesaler not found"
