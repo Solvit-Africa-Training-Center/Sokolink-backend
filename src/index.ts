@@ -20,7 +20,26 @@ const app = express();
 
 // JSON parsing
 app.use(express.json());
-app.use(cors());
+// For testing: allow all origins
+app.use(cors({
+  origin: "https://sokolink-backend-liuh.onrender.com/api", // Replace "*" with your frontend domain in production
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
+
+// If you want dynamic origin checking for production:
+const allowedOrigins = ["https://sokolink-backend-liuh.onrender.com/api"];
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
 
 // Session & Passport
 app.use(
