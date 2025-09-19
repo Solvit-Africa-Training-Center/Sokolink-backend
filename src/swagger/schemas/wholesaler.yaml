@@ -1,0 +1,78 @@
+components:
+  schemas:
+    WholesalerRegister:
+      type: object
+      required:
+        - name
+        - email
+        - password
+        - roleName
+        - phoneNumber
+        - businessName
+        - taxNumber
+        - businessAddress
+        - businessLicenseNumber
+        - businessLicenseDocument
+        - taxCertificate
+      properties:
+        name:
+          type: string
+          example: "Hire"
+        email:
+          type: string
+          format: email
+          example: "hire@example.com"
+        password:
+          type: string
+          format: password
+          example: "StrongPass@123"
+        roleName:
+          type: string
+          example: "Wholesaler"
+        phoneNumber:
+          type: string
+          example: "+250788123456"
+        businessName:
+          type: string
+          example: "Hire Distributors Ltd"
+        taxNumber:
+          type: string
+          example: "TIN-123456789"
+        businessAddress:
+          type: string
+          example: "Kigali, Rwanda"
+        businessLicenseNumber:
+          type: string
+          example: "LIC-987654321"
+        businessLicenseDocument:
+          type: string
+          format: binary   # file upload
+          description: Upload a PDF or image of the business license
+        taxCertificate:
+          type: string
+          format: binary   # file upload
+          description: Upload a PDF or image of the tax certificate
+
+    WholesalerResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+        name:
+          type: string
+          example: "Hire"
+        email:
+          type: string
+          format: email
+          example: "hire@example.com"
+        status:
+          type: string
+          example: "pending"
+        businessLicenseDocument:
+          type: string
+          example: "uploads/legalDocs/license123.pdf"
+        taxCertificate:
+          type: string
+          example: "uploads/legalDocs/taxcert123.pdf"

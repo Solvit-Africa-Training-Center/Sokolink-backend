@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { ValidationMiddleware } from '../middlewares/validationMiddleware';
-import { getAllUsers, registerUser, loginUser, logoutUser } from '../controllers/userController';
+import { getAllUsers, registerUser, loginUser, logoutUser, deleteUser } from '../controllers/userController';
 import { AddUserSchema, LoginUserSchema } from '../schema/userSchema';
 import { authMiddleware, checkRole, rateLimiting } from '../middlewares/authMiddleware';
 
@@ -22,5 +22,7 @@ userRouter.post(
 );
 
 userRouter.post('/logout', authMiddleware, logoutUser);
+// Delete user by ID
+userRouter.delete('/users/:id',  authMiddleware, deleteUser);
 
 export { userRouter };
