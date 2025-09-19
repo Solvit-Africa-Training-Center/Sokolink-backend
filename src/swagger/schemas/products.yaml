@@ -285,10 +285,10 @@ components:
           type: string
           format: uuid
           description: Product sub-category ID
-        variation:
-          type: object
-          nullable: true
-          description: Product variations (optional)
+        # variation:
+        #   type: object
+        #   nullable: true
+        #   description: Product variations (optional)
         expiredAt:
           type: string
           format: date-time
