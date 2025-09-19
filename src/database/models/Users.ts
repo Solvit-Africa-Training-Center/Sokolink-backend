@@ -1,8 +1,8 @@
 import { Sequelize, Model, DataTypes } from 'sequelize';
 import { Role } from './Roles';
 import { Profile } from './Profiles';
-// import { Rating } from './ratings';
-// import { Product } from './Products';
+import { Rating } from './Ratings';
+import { Product } from './Products';
 interface UserAttribute {
   id: string;
   name: string;
@@ -11,6 +11,9 @@ interface UserAttribute {
   roleId: string;
   businessName?: string; 
   phoneNumber?: string;
+  businessLicenseDocument?: string | null;
+  taxCertificate?: string | null;
+  status: 'pending' | 'approved' | 'rejected';
   createdAt?: Date;
   updatedAt?: Date;
   deletedAt?: null;
@@ -25,16 +28,19 @@ export interface UserCreationAttribute
 }
 
 export class User extends Model<UserAttribute, UserCreationAttribute> implements UserAttribute {
-  public id!: string;
-  public name!: string;
-  public email!: string;
-  public password!: string;
-  public roleId!: string;
-  public businessName!: string; 
-  public phoneNumber!: string;
-  public updatedAt!: Date;
-  public deletedAt: null = null;
-  public createdAt: Date = new Date();
+  declare id: string;
+  declare name: string;
+  declare email: string;
+  declare password: string;
+  declare roleId: string;
+  declare businessName: string; 
+  declare phoneNumber: string;
+  declare businessLicenseDocument: string;
+  declare taxCertificate: string;  
+  declare status: 'pending' | 'approved' | 'rejected';
+  declare updatedAt: Date;
+  declare deletedAt: null;
+  declare createdAt: Date;
 
   public toJSON(): object | UserAttribute {
     return {
@@ -44,6 +50,9 @@ export class User extends Model<UserAttribute, UserCreationAttribute> implements
       roleId: this.roleId,
       businessName: this.businessName,
       phoneNumber: this.phoneNumber, 
+      businessLicenseDocument: this.businessLicenseDocument,
+      taxCertificate: this.taxCertificate,
+      status: this.status,
       updatedAt: this.updatedAt,
       createdAt: this.createdAt,
     };
@@ -52,8 +61,8 @@ export class User extends Model<UserAttribute, UserCreationAttribute> implements
   static associate(models: {
     Role: typeof Role;
     Profile: typeof Profile;
-    // Rating: typeof Rating;
-    // Product: typeof Product;
+    Rating: typeof Rating;
+    Product: typeof Product;
   }): void {
     User.belongsTo(models.Role, {
       foreignKey: 'roleId',
@@ -65,15 +74,15 @@ export class User extends Model<UserAttribute, UserCreationAttribute> implements
       as: 'user',
     });
 
-    // User.hasMany(models.Product, {
-    //   foreignKey: 'userId',
-    //   as: 'products',
-    // });
+    User.hasMany(models.Product, {
+      foreignKey: 'userId',
+      as: 'products',
+    });
 
-    // User.hasMany(Rating, {
-    //   foreignKey: 'postedBy',
-    //   as: 'ratings',
-    // });
+    User.hasMany(Rating, {
+      foreignKey: 'postedBy',
+      as: 'ratings',
+    });
   }
 }
 
@@ -108,8 +117,22 @@ export const UserModal = (sequelize: Sequelize) => {
         onUpdate: 'CASCADE',
         onDelete: 'SET NULL',
       },
-      businessName: { type: DataTypes.STRING, allowNull: false },  
-    phoneNumber: { type: DataTypes.STRING, allowNull: false },
+      businessName: { type: DataTypes.STRING, allowNull: true },  
+      phoneNumber: { type: DataTypes.STRING, allowNull: true },
+       status: {
+      type: DataTypes.ENUM('pending', 'approved', 'rejected'),
+      allowNull: true,
+      defaultValue: 'pending',
+    },
+      businessLicenseDocument: {
+      type: DataTypes.STRING,
+      allowNull: true, // Wholesaler uploads it
+    },
+    taxCertificate: {
+      type: DataTypes.STRING,
+      allowNull: true, // Wholesaler uploads it
+    },
+
     },
     {
       sequelize,

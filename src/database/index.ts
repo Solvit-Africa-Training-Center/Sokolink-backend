@@ -1,25 +1,29 @@
-import databaseConfig from '../config/config';
-
-import { Sequelize } from 'sequelize';
-import { AllModal } from './models';
-
-interface ConfigInterface {
-  username: string;
-  password: string;
-  database: string;
-  port: number;
-  host: string;
-}
+import { Sequelize } from "sequelize";
+import { AllModal } from "./models";
+import { databaseConfig, ConfigInterface } from "../config/config";
 
 const dbConnection = () => {
   const db_config = databaseConfig() as ConfigInterface;
-  const sequelize = new Sequelize({
-    ...db_config,
-    dialect: 'postgres',
-  });
+
+  let sequelize: Sequelize;
+
+  if (db_config.url) {
+    // Render / PROD
+    sequelize = new Sequelize(db_config.url, {
+      dialect: "postgres",
+      logging: false,
+    });
+  } else {
+    // Local DEV
+    sequelize = new Sequelize({
+      ...db_config,
+      dialect: "postgres",
+      logging: false,
+    });
+  }
+
   return sequelize;
 };
-
 
 const sequelizeInstance = dbConnection();
 
@@ -27,19 +31,19 @@ const sequelizeInstance = dbConnection();
 sequelizeInstance
   .authenticate()
   .then(() => {
-    console.log('Database connected successfully');
+    console.log("Database connected successfully");
   })
   .catch((err) => {
-    console.error('Database connection error:', err);
+    console.error("Database connection error:", err);
   });
 
 const models = AllModal(sequelizeInstance);
 
-Object.values(models).forEach((model) => {
+Object.values(models).forEach((model: any) => {
   if (model.associate) {
     model.associate(models);
   }
 });
-export type DatabaseType = typeof models & { database: Sequelize };
 
+export type DatabaseType = typeof models & { database: Sequelize };
 export const Database = { ...models, database: sequelizeInstance };

@@ -15,11 +15,11 @@ export interface RoleCreationAttributes
 }
 
 export class Role extends Model<RoleAttributes, RoleCreationAttributes> implements RoleAttributes {
-  public id!: string;
-  public name!: string;
-  public description?: string;
-  public createdAt?: Date;
-  public updatedAt?: Date;
+  declare id: string;
+  declare name: string;
+  declare description?: string;
+  declare createdAt?: Date;
+  declare updatedAt?: Date;
 
   public toJSON(): object | RoleAttributes {
     return {
