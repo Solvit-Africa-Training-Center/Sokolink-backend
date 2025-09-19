@@ -1,5 +1,4 @@
 import express, { Request, Response } from "express";
-import { config } from "dotenv";
 import { Database } from "./database";
 import redis from "./utils/redis";
 import { routers } from './routes';
@@ -11,12 +10,36 @@ import { swaggerSpec } from "./swagger/config";
 import { User } from "./database/models/Users";
 import { Role } from "./database/models/Roles";
 import jwt from "jsonwebtoken";
+import { config } from "dotenv";
+import cors from "cors";
+import { wholesalerRouter } from "./routes/wholesalerRoutes";
 
+import { retailerRouter } from "./routes/retailerRoutes";
 config();
 const app = express();
 
 // JSON parsing
 app.use(express.json());
+// For testing: allow all origins
+app.use(cors({
+  origin: "https://sokolink-backend-liuh.onrender.com/api", // Replace "*" with your frontend domain in production
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
+
+// If you want dynamic origin checking for production:
+const allowedOrigins = ["https://sokolink-backend-liuh.onrender.com/api"];
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
 
 // Session & Passport
 app.use(
@@ -60,8 +83,9 @@ passport.use(
           user = await User.create({
             name,
             email,
-            password:"", // Google login doesn't require password
+            password: "", // Google login doesn't require password
             roleId: defaultRole.id,
+            status: "pending", // Set default status for Google login users
           });
         }
 
@@ -98,6 +122,9 @@ app.get(
 
 passport.serializeUser((user, done) => done(null, user));
 passport.deserializeUser((user: any, done) => done(null, user));
+
+app.use("/api/wholesalers", wholesalerRouter);
+app.use('/api/retailers', retailerRouter);
 
 // Routers
 app.use(routers);
@@ -172,5 +199,7 @@ Database.database
     });
   })
   .catch((err) => console.error("Database connection error:", err));
+  app.use("/api/wholesalers", wholesalerRouter);
+  app.use('/api/retailers', retailerRouter);
 
 export { app };

@@ -1,0 +1,20 @@
+/retailers/register:
+    post:
+      tags:
+        - Retailers
+      summary: Register a new retailer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RetailerRegister'
+      responses:
+        '201':
+          description: Retailer registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetailerResponse'
+        '400':
+          description: Validation error

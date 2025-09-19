@@ -1,0 +1,48 @@
+components:
+  schemas:
+    AdminLogin:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          example: admin@example.com
+        password:
+          type: string
+          example: admin123
+
+    AdminUserResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        email:
+          type: string
+
+          UpdateUser:
+  type: object
+  properties:
+    name:
+      type: string
+      example: "John Doe"
+    email:
+      type: string
+      example: "john@example.com"
+    status:
+      type: string
+      enum: ["pending", "approved", "rejected"]
+      example: "approved"
+    businessName:
+      type: string
+      example: "John Supplies Ltd"
+    phoneNumber:
+      type: string
+      example: "+250788123456"
+  required:
+    - name
+    - email

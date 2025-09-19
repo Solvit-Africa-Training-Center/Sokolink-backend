@@ -40,6 +40,7 @@ const swaggerDefinition: SwaggerDefinition = {
     { bearerAuth: [] }, // Apply JWT globally
   ],
   tags: [
+    { name: 'Admin', description: 'Admin authentication and management endpoints' },
     { name: 'Auth', description: 'User authentication and registration' },
     { name: 'Products', description: 'Product management and viewing' },
     { name: 'Wholesalers', description: 'Wholesaler-specific endpoints' },
