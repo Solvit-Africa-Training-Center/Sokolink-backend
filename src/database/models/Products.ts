@@ -29,23 +29,23 @@ export class Product
   extends Model<ProductAttributes, ProductCreationAttributes>
   implements ProductAttributes
 {
-  public id!: string;
-  public name!: string;
-  public description!: string;
-  public price!: number;
-  public stock!: number;
-  public productCatId!: string;
-  public productSubCatId!: string;
-  public userId!: string;
-  public variation!: object | null;
-  public images!: string[];
-  public isAvailable!: boolean;
-  public expiredAt?: Date | undefined;
+  declare id: string;
+ declare name: string;
+ declare description: string;
+  declare price: number;
+  declare stock: number;
+  declare productCatId: string;
+  declare productSubCatId: string;
+  declare userId: string;
+  declare variation: object | null;
+  declare images: string[];
+  declare isAvailable: boolean;
+  declare expiredAt?: Date | undefined;
 
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
+  declare readonly createdAt: Date;
+  declare readonly updatedAt: Date;
 
-  public static associate(models: {
+  static associate(models: {
     User: typeof User;
     ProductCategory: typeof ProductCategory;
     ProductSubCategory: typeof ProductSubCategory;

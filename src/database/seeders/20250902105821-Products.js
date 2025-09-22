@@ -32,8 +32,8 @@ module.exports = {
             storage: ['128GB', '256GB', '512GB'],
           }),
           images: [
-            'https://example.com/samsung-s24-1.jpg',
-            'https://example.com/samsung-s24-2.jpg',
+            'https://pixabay.com/photos/samsung-galaxy-s10-phone-4721543/',
+            'https://pixabay.com/photos/samsung-galaxy-s10-phone-4721543/',
           ],
           isAvailable: true,
           createdAt: new Date(),
@@ -53,8 +53,8 @@ module.exports = {
             storage: ['128GB', '256GB', '512GB', '1TB'],
           }),
           images: [
-            'https://example.com/iphone-15-pro-1.jpg',
-            'https://example.com/iphone-15-pro-2.jpg',
+            'https://pixabay.com/photos/smartphone-camera-landscape-nature-6405227/',
+            'https://pixabay.com/photos/smartphone-camera-landscape-nature-6405227/',
           ],
           isAvailable: false,
           createdAt: new Date(),
@@ -75,8 +75,8 @@ module.exports = {
             storage: ['512GB', '1TB', '2TB'],
           }),
           images: [
-            'https://example.com/macbook-pro-1.jpg',
-            'https://example.com/macbook-pro-2.jpg',
+            'https://pixabay.com/photos/macbook-pro-adapter-usb-c-macbook-2381729/',
+            'https://pixabay.com/photos/macbook-pro-adapter-usb-c-macbook-2381729/',
           ],
           isAvailable: true,
           createdAt: new Date(),
@@ -96,8 +96,8 @@ module.exports = {
             sizes: ['S', 'M', 'L', 'XL', 'XXL'],
           }),
           images: [
-            'https://example.com/mens-tshirt-1.jpg',
-            'https://example.com/mens-tshirt-2.jpg',
+            'https://pixabay.com/photos/t-shirt-white-t-shirt-t-shirt-mockup-9611374/',
+            'https://pixabay.com/photos/beer-monster-t-shirt-tshirt-funny-792100/',
           ],
           isAvailable: true,
           createdAt: new Date(),
@@ -116,7 +116,7 @@ module.exports = {
             format: ['Paperback', 'Hardcover', 'E-book'],
             language: ['English'],
           }),
-          images: ['https://example.com/js-book-1.jpg', 'https://example.com/js-book-2.jpg'],
+          images: ['https://pixabay.com/photos/technology-computer-code-javascript-1283624/', 'https://pixabay.com/photos/coding-programming-css-html-php-4570799/'],
           isAvailable: true,
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -130,4 +130,3 @@ module.exports = {
     await queryInterface.bulkDelete('products', null, {});
   },
 };
-
