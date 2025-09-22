@@ -13,13 +13,13 @@ export interface ConfigInterface {
 // ✅ Named export
 export function databaseConfig(): ConfigInterface {
   if (process.env.DATABASE_URL) {
-    // Render / PROD
+    // Render / Production
     return {
       url: process.env.DATABASE_URL,
     };
   }
 
-  // Local DEV
+  // Local Development
   return {
     username: process.env.DEV_USERNAME,
     password: process.env.DEV_PASSWORD,
